@@ -24,7 +24,7 @@ import {
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { BackgroundAnimation } from './components/BackgroundAnimation';
-import profileImg from "./assets/about-me.jpg"
+import profileImg from "./assets/about-me.jpeg"
 import logoImg from "./assets/Jumao-as_ID.png"
 
 const SKILLS = [
@@ -52,26 +52,12 @@ const SKILLS = [
 
 const EXPERIENCE = [
   {
-    role: "Front-end Developer",
-    company: "TechPulse Solutions",
-    period: "2024 - Present",
+    role: "Website Developer Intern",
+    company: "Lifewood Data Technology",
+    period: "January 2026 - May 2026 (540 Hours)",
     description: "Leading the development of responsive web interfaces using React and Tailwind CSS. Implementing AI-driven features to enhance user engagement.",
     tech: ["React", "TypeScript", "Tailwind", "Gemini API"]
   },
-  {
-    role: "Junior Web Designer",
-    company: "Creative Flow Studio",
-    period: "2023 - 2024",
-    description: "Designed and developed custom WordPress themes and high-fidelity prototypes for international clients.",
-    tech: ["Figma", "Webflow", "JavaScript", "PHP"]
-  },
-  {
-    role: "AI Implementation Intern",
-    company: "Neural Systems Corp",
-    period: "2022 - 2023",
-    description: "Assisted in the integration of LLMs into customer support workflows and data visualization dashboards.",
-    tech: ["Python", "TensorFlow", "React", "D3.js"]
-  }
 ];
 
 const PROJECTS = [
