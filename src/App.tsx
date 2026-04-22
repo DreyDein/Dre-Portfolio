@@ -220,7 +220,7 @@ export default function App() {
               <motion.div 
                 animate={{ y: [0, -10, 0] }}
                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -right-10 top-1/2 -translate-y-1/2 bg-white p-6 shadow-2xl rounded-2xl border border-slate-100 hidden xl:block"
+                className="absolute -right-4 bottom-4 bg-white p-6 shadow-2xl rounded-2xl border border-slate-100 hidden xl:block"
               >
                 <div className="flex items-center space-x-4">
                   <div className="w-12 h-12 bg-indigo-600 flex items-center justify-center text-white rounded-xl">
