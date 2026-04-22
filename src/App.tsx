@@ -24,6 +24,8 @@ import {
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { BackgroundAnimation } from './components/BackgroundAnimation';
+import profileImg from "./assets/about-me.jpg"
+import logoImg from "./assets/Jumao-as_ID.png"
 
 const SKILLS = [
   {
@@ -131,7 +133,7 @@ export default function App() {
             animate={{ opacity: 1, x: 0 }}
             className="flex items-center gap-3"
           >
-            <img src="./src/assets/Jumao-as_ID.png" alt="Logo" className="w-10 h-10 rounded-lg object-cover" />
+            <img src={logoImg} alt="Logo" className="w-10 h-10 rounded-lg object-cover" />
             <span className="font-bold text-lg md:text-xl tracking-tight uppercase text-slate-800">Andre Daniel Jumao-as</span>
           </motion.div>
           
@@ -208,7 +210,7 @@ export default function App() {
                 <div className="absolute -bottom-4 -right-4 w-24 h-24 border-b-2 border-r-2 border-indigo-600"></div>
                 
                 <img 
-                  src="./src/assets/about-me.jpg"
+                  src={profileImg}
                   alt="Profile" 
                   className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700 rounded-xl"
                 />
