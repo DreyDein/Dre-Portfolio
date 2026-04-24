@@ -26,6 +26,12 @@ import { useState, useEffect } from 'react';
 import { BackgroundAnimation } from './components/BackgroundAnimation';
 import profileImg from "./assets/about-me.jpeg"
 import logoImg from "./assets/Jumao-as_ID.png"
+import lifewoodImg from "./assets/Lifewood-Intern.jpeg"
+import lifewood1Img from "./assets/lifewood (1).png"
+import lifewood2Img from "./assets/lifewood (2).png"
+import lifewood3Img from "./assets/lifewood (3).png"
+import lifewoodSiteImg from "./assets/Lifewood-site.png"
+import edumatchImg from "./assets/Edumatch.png"
 
 const SKILLS = [
   {
@@ -56,37 +62,46 @@ const EXPERIENCE = [
     company: "Lifewood Data Technology",
     period: "January 2026 - May 2026 (540 Hours)",
     description: "Leading the development of responsive web interfaces using React and Tailwind CSS. Implementing AI-driven features to enhance user engagement.",
-    tech: ["React", "TypeScript", "Tailwind", "Gemini API"]
+    tech: ["React", "TypeScript", "Tailwind", "Gemini API"],
+    image: lifewoodImg
   },
 ];
 
 const PROJECTS = [
-  {
-    title: "CloudInventory AI",
-    description: "An AI-powered inventory management system with real-time stock tracking and predictive demand forecasting.",
-    tech: ["Next.js", "PostgreSQL", "OpenAI API", "AWS"],
+{
+    title: "EDUMATCH: A MACHINE LEARNING-BASED RECOMMENDATION SYSTEM FOR TERTIARY SCHOOL SELECTION",
+    role: "Technical Writer | Front-End Designer",
+    label: "Capstone Project",
+    description: "EduMatch is an AI-powered recommendation system that helps students choose the right university based on their preferences such as budget, location, programs, and school type. It uses machine learning to provide personalized school suggestions and offers additional features like university profiles, comparisons, reviews, and chatbot support to make the decision-making process easier, more informed, and less stressful.",
+    tech: [".NET core", "Python","GraphHopper API", "Gemini API", "TypeScript", "React", "Tailwind CSS", "shadcn/ui", "PostgreSQL"],
     link: "#",
-    github: "#",
-    image: "https://picsum.photos/seed/inventory/800/600"
+    github: "https://github.com/dev-tabanag/edumatch",
+    image: edumatchImg
   },
   {
-    title: "EcoTrack API",
-    description: "A RESTful API for monitoring environmental data from IoT sensors, featuring high-performance data ingestion.",
-    tech: ["Node.js", "Express", "Redis", "Docker"],
-    link: "#",
-    github: "#",
-    image: "https://picsum.photos/seed/sensor/800/600"
+    title: "LifePlan: AI Production Planning Agent",
+    role: "Front-End Developer | UI/UX Designer",
+    label: "Internship Project",
+    description: "LifePlan is an AI-powered production planning agent that helps operators, admins, and team leads streamline scheduling and optimize capacity planning. By automating complex planning decisions, LifePlan reduces bottlenecks and keeps your production running efficiently — every shift, every time.",
+    tech: ["React", "TypeScript", "MiniMax API", "Springboot", "Vercel"],
+    link: "https://production-plan-agent.vercel.app",
+    github: "https://github.com/ezzeljan/prodplan",
+    images: [lifewood1Img, lifewood2Img, lifewood3Img]
   },
   {
-    title: "DeFi Dashboard",
-    description: "A minimalist dashboard for tracking decentralized finance assets across multiple blockchain networks.",
-    tech: ["React", "Ethers.js", "Tailwind", "Chart.js"],
-    link: "#",
-    github: "#",
-    image: "https://picsum.photos/seed/crypto/800/600"
+    title: "Lifewood Website Imitation",
+    role: "Full-stack Developer",
+    label: "Internship Project",
+    description: "An internship project focused on developing a full-stack web application that replicates a company website while integrating enhanced features for both users and administrators. The frontend presents key sections such as company information, services, projects, and career opportunities, delivering a clean and interactive user experience. The backend is supported by a structured admin management system that enables efficient control of content, user interactions, and system operations. Key features include managing inquiries, handling data processes, and maintaining platform performance, with additional support for role-based access, system monitoring, and streamlined administrative workflows.",
+    tech: ["React", "TypeScript", "Supabase", "Vercel", "Gemini API"],
+    link: "https://lifewood-website-zlwn.vercel.app",
+    github: "https://github.com/DreyDein/lifewoodd",
+    image: lifewoodSiteImg
   },
   {
     title: "GitLab Automate",
+    role: "DevOps Engineer",
+    label: "Automation Script",
     description: "Custom CI/CD pipelines and scripts to automate deployment workflows for microservices architecture.",
     tech: ["Bash", "Python", "GitLab CI", "Linux"],
     link: "#",
@@ -97,6 +112,8 @@ const PROJECTS = [
 
 export default function App() {
   const [scrolled, setScrolled] = useState(false);
+  const [selectedProject, setSelectedProject] = useState<typeof PROJECTS[0] | null>(null);
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -174,10 +191,10 @@ export default function App() {
                   <ArrowUpRight className="ml-2 w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                 </a>
                 <div className="flex items-center space-x-4 ml-2">
-                  <a href="#" className="p-3 bg-white border border-slate-200 rounded-xl hover:border-indigo-600 transition-colors shadow-sm">
+                  <a href="https://github.com/DreyDein" className="p-3 bg-white border border-slate-200 rounded-xl hover:border-indigo-600 transition-colors shadow-sm">
                     <Github className="w-5 h-5 text-slate-700" />
                   </a>
-                  <a href="#" className="p-3 bg-white border border-slate-200 rounded-xl hover:border-indigo-600 transition-colors shadow-sm">
+                  <a href="https://www.linkedin.com/in/andre-daniel-jumao-as-2756ab3a8/" className="p-3 bg-white border border-slate-200 rounded-xl hover:border-indigo-600 transition-colors shadow-sm">
                     <Linkedin className="w-5 h-5 text-slate-700" />
                   </a>
                 </div>
@@ -279,8 +296,17 @@ export default function App() {
                 {/* Timeline Dot */}
                 <div className="absolute left-0 top-2 w-4 h-4 rounded-full border-2 border-indigo-600 bg-white z-10 transition-transform group-hover:scale-125"></div>
 
-                <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
-                  <div>
+                <div className="flex flex-col md:flex-row md:items-start justify-between gap-6">
+                  {exp.image && (
+                    <div className="md:w-48 lg:w-56 flex-shrink-0 order-1 md:order-1">
+                      <img 
+                        src={exp.image} 
+                        alt={exp.company}
+                        className="w-full h-auto rounded-lg object-cover shadow-lg"
+                      />
+                    </div>
+                  )}
+                  <div className="flex-1 order-2 md:order-2">
                     <span className="text-[10px] font-bold uppercase tracking-widest text-indigo-600 mb-2 block">{exp.period}</span>
                     <h3 className="text-2xl font-bold text-slate-900 mb-1">{exp.role}</h3>
                     <p className="text-lg font-semibold text-slate-500 mb-4">{exp.company}</p>
@@ -325,11 +351,11 @@ export default function App() {
                 transition={{ delay: index * 0.1 }}
                 className="group"
               >
-                <div className="relative overflow-hidden rounded-2xl mb-6 aspect-video bg-slate-100 border border-slate-200">
+                <div className="relative overflow-hidden rounded-2xl mb-6 aspect-video bg-slate-100 border border-slate-200 cursor-pointer flex items-center justify-center" onClick={() => { setSelectedProject(project); setActiveImageIndex(0); }}>
                   <img 
-                    src={project.image} 
+                    src={project.images ? project.images[0] : project.image} 
                     alt={project.title}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0 opacity-80 group-hover:opacity-100"
+                    className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0 opacity-80 group-hover:opacity-100"
                     referrerPolicy="no-referrer"
                   />
                   <div className="absolute inset-0 bg-indigo-900/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center space-x-4 backdrop-blur-sm">
@@ -341,8 +367,20 @@ export default function App() {
                     </a>
                   </div>
                 </div>
-                <div className="flex items-start justify-between">
+                <div className="flex items-start justify-between cursor-pointer" onClick={() => setSelectedProject(project)}>
                   <div>
+                    <div className="flex items-center gap-2 mb-2 flex-wrap">
+                      {project.label && (
+                        <span className="text-[10px] font-bold uppercase tracking-widest text-amber-600 bg-amber-50 px-2 py-0.5 rounded">
+                          {project.label}
+                        </span>
+                      )}
+                      {project.role && (
+                        <span className="text-[10px] font-bold uppercase tracking-widest text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded">
+                          {project.role}
+                        </span>
+                      )}
+                    </div>
                     <h3 className="text-2xl font-bold mb-2 text-slate-800 group-hover:text-indigo-600 transition-colors">{project.title}</h3>
                     <p className="text-slate-500 text-sm mb-4 line-clamp-2 max-w-sm">
                       {project.description}
@@ -395,8 +433,8 @@ export default function App() {
                 <div className="group cursor-pointer">
                   <p className="text-[10px] uppercase tracking-widest text-indigo-400 mb-2 font-bold">Social Handlers</p>
                   <div className="flex space-x-6">
-                    <a href="#" className="hover:text-indigo-400 transition-colors">LinkedIn</a>
-                    <a href="#" className="hover:text-indigo-400 transition-colors">GitHub</a>
+                    <a href="https://www.linkedin.com/in/andre-daniel-jumao-as-2756ab3a8/" className="hover:text-indigo-400 transition-colors">LinkedIn</a>
+                    <a href="https://github.com/DreyDein" className="hover:text-indigo-400 transition-colors">GitHub</a>
                     <a href="#" className="hover:text-indigo-400 transition-colors">Digital CV</a>
                   </div>
                 </div>
@@ -440,6 +478,121 @@ export default function App() {
           </div>
         </div>
       </section>
+
+      {/* Project Detail Modal */}
+      <AnimatePresence>
+        {selectedProject && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+            onClick={() => setSelectedProject(null)}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {selectedProject.images ? (
+                <div className="relative aspect-video bg-slate-100 flex items-center justify-center">
+                  <img
+                    src={selectedProject.images[activeImageIndex]}
+                    alt={selectedProject.title}
+                    className="w-full h-full object-contain"
+                    referrerPolicy="no-referrer"
+                  />
+                  {selectedProject.images.length > 1 && (
+                    <div className="absolute inset-0 flex items-center justify-between p-4">
+                      <button
+                        onClick={() => setActiveImageIndex((activeImageIndex - 1 + selectedProject.images!.length) % selectedProject.images!.length)}
+                        className="p-2 bg-white/90 rounded-lg hover:bg-white transition-colors shadow-lg"
+                      >
+                        <ChevronRight className="w-5 h-5 rotate-180" />
+                      </button>
+                      <button
+                        onClick={() => setActiveImageIndex((activeImageIndex + 1) % selectedProject.images!.length)}
+                        className="p-2 bg-white/90 rounded-lg hover:bg-white transition-colors shadow-lg"
+                      >
+                        <ChevronRight className="w-5 h-5" />
+                      </button>
+                    </div>
+                  )}
+                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+                    {selectedProject.images.map((_, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => setActiveImageIndex(idx)}
+                        className={`w-2 h-2 rounded-full transition-all ${
+                          idx === activeImageIndex ? "bg-indigo-600 w-4" : "bg-white/70"
+                        }`}
+                      />
+                    ))}
+                  </div>
+                  <button
+                    onClick={() => { setSelectedProject(null); setActiveImageIndex(0); }}
+                    className="absolute top-4 right-4 p-2 bg-white/90 rounded-lg hover:bg-white transition-colors shadow-lg"
+                  >
+                    <ChevronRight className="w-5 h-5 rotate-45" />
+                  </button>
+                </div>
+              ) : (
+                <div className="relative aspect-video bg-slate-100 flex items-center justify-center">
+                  <img
+                    src={selectedProject.image}
+                    alt={selectedProject.title}
+                    className="w-full h-full object-contain"
+                    referrerPolicy="no-referrer"
+                  />
+                  <button
+                    onClick={() => setSelectedProject(null)}
+                    className="absolute top-4 right-4 p-2 bg-white/90 rounded-lg hover:bg-white transition-colors shadow-lg"
+                  >
+                    <ChevronRight className="w-5 h-5 rotate-45" />
+                  </button>
+                </div>
+              )}
+              <div className="p-8">
+                <div className="flex items-center gap-2 mb-3 flex-wrap">
+                  {selectedProject.label && (
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-amber-600 bg-amber-50 px-2 py-0.5 rounded">
+                      {selectedProject.label}
+                    </span>
+                  )}
+                  {selectedProject.role && (
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded">
+                      {selectedProject.role}
+                    </span>
+                  )}
+                </div>
+                <h3 className="text-2xl font-bold mb-4 text-slate-800">{selectedProject.title}</h3>
+                <p className="text-slate-600 leading-relaxed mb-6">
+                  {selectedProject.description}
+                </p>
+                <div className="flex flex-wrap gap-2 mb-6">
+                  {selectedProject.tech.map(t => (
+                    <span key={t} className="text-[10px] font-bold uppercase tracking-widest text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded">
+                      {t}
+                    </span>
+                  ))}
+                </div>
+                <div className="flex gap-4">
+                  <a href={selectedProject.github} className="flex items-center gap-2 px-4 py-2 bg-slate-900 text-white rounded-lg text-sm font-bold hover:bg-slate-800 transition-colors">
+                    <Github className="w-4 h-4" />
+                    View Code
+                  </a>
+                  <a href={selectedProject.link} className="flex items-center gap-2 px-4 py-2 border border-slate-200 rounded-lg text-sm font-bold hover:bg-slate-50 transition-colors">
+                    <ExternalLink className="w-4 h-4" />
+                    Live Demo
+                  </a>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
