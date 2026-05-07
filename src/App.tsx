@@ -32,14 +32,6 @@ import lifewood2Img from "./assets/lifewood (2).png"
 import lifewood3Img from "./assets/lifewood (3).png"
 import lifewoodSiteImg from "./assets/Lifewood-site.png"
 import edumatchImg from "./assets/Edumatch.png"
-import edumatch2Img from "./assets/edumatch2.png"
-import edumatch3Img from "./assets/edumatch3.png"
-import edumatch4Img from "./assets/edumatch4.png"
-import edumatch5Img from "./assets/edumatch5.png"
-import gamedev1Img from "./assets/gamedev1.png"
-import gamedev2Img from "./assets/gamedev2.png"
-import gamedev3Img from "./assets/gamedev3.png"
-import gamedev4Img from "./assets/gamedev4.png"
 
 const SKILLS = [
   {
@@ -76,7 +68,7 @@ const EXPERIENCE = [
 ];
 
 const PROJECTS = [
-  {
+{
     title: "EDUMATCH: A MACHINE LEARNING-BASED RECOMMENDATION SYSTEM FOR TERTIARY SCHOOL SELECTION",
     role: "Technical Writer | Front-End Designer",
     label: "Capstone Project",
@@ -84,7 +76,7 @@ const PROJECTS = [
     tech: [".NET core", "Python","GraphHopper API", "Gemini API", "TypeScript", "React", "Tailwind CSS", "shadcn/ui", "PostgreSQL"],
     link: "#",
     github: "https://github.com/dev-tabanag/edumatch",
-    images: [edumatchImg, edumatch2Img, edumatch3Img, edumatch4Img, edumatch5Img]
+    image: edumatchImg
   },
   {
     title: "LifePlan: AI Production Planning Agent",
@@ -111,10 +103,10 @@ const PROJECTS = [
     role: "Level Designer",
     label: "Game Development Project",
     description: "The Deliverance is a first-person survival horror game for one or two players. You play as Sam and Dean, hunters from a secretive order tasked with investigating supernatural threats hidden from the rest of the world. Your first case takes you to Ashcroft Manor — an abandoned estate with a dark past. A woman was murdered here, her name erased and her story buried. Now her spirit haunts the halls, and she won't rest until the truth is uncovered. To end the haunting, you must explore the mansion, piece together scattered clues, and locate the cursed object binding her to the physical world. But the manor won't let you search in peace. Lights flicker. Shadows move. And something is always watching. Find the Anchor. Survive the Entity. Deliver it — before it delivers you.",
-    tech: ["Bash", "Python", "GitLab CI", "Linux"],
+    tech: ["Unreal Engine", "C++", "Mixamo", "SketchFab"],
     link: "#",
     github: "#",
-    images: [gamedev1Img, gamedev2Img, gamedev3Img, gamedev4Img]
+    image: "https://picsum.photos/seed/devops/800/600"
   }
 ];
 
