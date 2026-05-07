@@ -31,7 +31,14 @@ import lifewood1Img from "./assets/lifewood (1).png"
 import lifewood2Img from "./assets/lifewood (2).png"
 import lifewood3Img from "./assets/lifewood (3).png"
 import lifewoodSiteImg from "./assets/Lifewood-site.png"
+import lifewoodSite2Img from "./assets/lifewood-site2.png"
+import lifewoodSite3Img from "./assets/lifewood-site3.png"
+import lifewoodSite4Img from "./assets/lifewood-site4.png"
 import edumatchImg from "./assets/Edumatch.png"
+import gamedev1Img from "./assets/gamedev1.png"
+import gamedev2Img from "./assets/gamedev2.png"
+import gamedev3Img from "./assets/gamedev3.png"
+import gamedev4Img from "./assets/gamedev4.png"
 
 const SKILLS = [
   {
@@ -96,7 +103,7 @@ const PROJECTS = [
     tech: ["React", "TypeScript", "Supabase", "Vercel", "Gemini API"],
     link: "https://lifewood-website-zlwn.vercel.app",
     github: "https://github.com/DreyDein/lifewoodd",
-    image: lifewoodSiteImg
+    images: [lifewoodSiteImg, lifewoodSite2Img, lifewoodSite3Img, lifewoodSite4Img]
   },
   {
     title: "The Deliverance",
@@ -106,7 +113,7 @@ const PROJECTS = [
     tech: ["Unreal Engine", "C++", "Mixamo", "SketchFab"],
     link: "#",
     github: "#",
-    image: "https://picsum.photos/seed/devops/800/600"
+    images: [gamedev1Img, gamedev2Img, gamedev3Img, gamedev4Img]
   }
 ];
 
@@ -438,30 +445,6 @@ export default function App() {
                     <a href="#" className="hover:text-indigo-400 transition-colors">Digital CV</a>
                   </div>
                 </div>
-              </div>
-              
-              <div className="bg-white/5 p-8 rounded-2xl border border-white/10 backdrop-blur-sm">
-                <form className="space-y-6">
-                  <div>
-                    <label className="block text-[10px] uppercase tracking-widest text-slate-500 mb-2 font-bold">Identity</label>
-                    <input 
-                      type="text" 
-                      className="w-full bg-transparent border-b border-slate-700 pb-2 focus:border-indigo-400 outline-none transition-colors text-sm"
-                      placeholder="Your Name" 
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-[10px] uppercase tracking-widest text-slate-500 mb-2 font-bold">Gateway</label>
-                    <input 
-                      type="email" 
-                      className="w-full bg-transparent border-b border-slate-700 pb-2 focus:border-indigo-400 outline-none transition-colors text-sm"
-                      placeholder="Email Address" 
-                    />
-                  </div>
-                  <button className="w-full py-4 bg-indigo-600 text-white rounded-lg font-bold uppercase tracking-widest text-xs hover:bg-indigo-700 transition-colors mt-4 shadow-lg shadow-indigo-500/20">
-                    Execute Connection
-                  </button>
-                </form>
               </div>
             </div>
             
