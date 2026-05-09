@@ -20,10 +20,11 @@ import {
   FileCode,
   Layout,
   Layers,
-  ArrowUpRight
+  ArrowUpRight,
+  X
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
-import { BackgroundAnimation } from './components/BackgroundAnimation';
+import ColorBends from '../components/ColorBends';
 import profileImg from "./assets/about-me.jpeg"
 import logoImg from "./assets/Jumao-as_ID.png"
 import lifewoodImg from "./assets/Lifewood-Intern.jpeg"
@@ -35,6 +36,10 @@ import lifewoodSite2Img from "./assets/lifewood-site2.png"
 import lifewoodSite3Img from "./assets/lifewood-site3.png"
 import lifewoodSite4Img from "./assets/lifewood-site4.png"
 import edumatchImg from "./assets/Edumatch.png"
+import edumatch2Img from "./assets/edumatch2.png"
+import edumatch3Img from "./assets/edumatch3.png"
+import edumatch4Img from "./assets/edumatch4.png"
+import edumatch5Img from "./assets/edumatch5.png"
 import gamedev1Img from "./assets/gamedev1.png"
 import gamedev2Img from "./assets/gamedev2.png"
 import gamedev3Img from "./assets/gamedev3.png"
@@ -42,24 +47,34 @@ import gamedev4Img from "./assets/gamedev4.png"
 
 const SKILLS = [
   {
-    category: "Languages",
-    icon: <Code2 className="w-5 h-5" />,
-    items: ["TypeScript", "JavaScript", "Python", "Java", "SQL"]
+    category: "Frontend Development",
+    icon: <Globe className="w-5 h-5" />,
+    items: ["HTML & CSS", "JavaScript", "React"]
   },
   {
-    category: "Frontend",
-    icon: <Layout className="w-5 h-5" />,
-    items: ["React", "Next.js", "Tailwind CSS", "Redux", "Framer Motion"]
-  },
-  {
-    category: "Backend",
+    category: "Backend & Database",
     icon: <Database className="w-5 h-5" />,
-    items: ["Node.js", "Express", "PostgreSQL", "MongoDB", "Redis"]
+    items: ["Supabase", "Vercel"]
   },
   {
-    category: "Cloud & DevOps",
-    icon: <Cloud className="w-5 h-5" />,
-    items: ["AWS", "Docker", "Git", "Vercel", "CI/CD"]
+    category: "Game & 3D Development",
+    icon: <Layers className="w-5 h-5" />,
+    items: ["Unreal Engine", "Unity"]
+  },
+  {
+    category: "Version Control",
+    icon: <Code2 className="w-5 h-5" />,
+    items: ["Diversion", "Git"]
+  },
+  {
+    category: "AI & Generative Tools",
+    icon: <Cpu className="w-5 h-5" />,
+    items: ["AIGC", "AntiGravity", "Gamma", "Google AI Studio", "HeyGen", "LLMs", "NotebookLM"]
+  },
+  {
+    category: "AI Development & Engineering",
+    icon: <Terminal className="w-5 h-5" />,
+    items: ["AI Code Assistants", "HIL (Human-in-the-Loop)", "Prompt Engineering"]
   }
 ];
 
@@ -68,8 +83,8 @@ const EXPERIENCE = [
     role: "Website Developer Intern",
     company: "Lifewood Data Technology",
     period: "January 2026 - May 2026 (540 Hours)",
-    description: "Leading the development of responsive web interfaces using React and Tailwind CSS. Implementing AI-driven features to enhance user engagement.",
-    tech: ["React", "TypeScript", "Tailwind", "Gemini API"],
+    description: "Designed user flows, developed websites and AI agents, crawled and compiled datasets, and tested internal systems to support and improve company operations.",
+    tech: [],
     image: lifewoodImg
   },
 ];
@@ -83,7 +98,7 @@ const PROJECTS = [
     tech: [".NET core", "Python","GraphHopper API", "Gemini API", "TypeScript", "React", "Tailwind CSS", "shadcn/ui", "PostgreSQL"],
     link: "#",
     github: "https://github.com/dev-tabanag/edumatch",
-    image: edumatchImg
+    images: [edumatchImg, edumatch2Img, edumatch3Img, edumatch4Img, edumatch5Img]
   },
   {
     title: "LifePlan: AI Production Planning Agent",
@@ -121,6 +136,9 @@ export default function App() {
   const [scrolled, setScrolled] = useState(false);
   const [selectedProject, setSelectedProject] = useState<typeof PROJECTS[0] | null>(null);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const [cardImageIndices, setCardImageIndices] = useState<number[]>(PROJECTS.map(() => 0));
+  const [showResumeMenu, setShowResumeMenu] = useState(false);
+  const [showResumeViewer, setShowResumeViewer] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -128,13 +146,39 @@ export default function App() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCardImageIndices(prev =>
+        prev.map((idx, i) => {
+          const images = PROJECTS[i].images;
+          return images ? (idx + 1) % images.length : 0;
+        })
+      );
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className="min-h-screen font-sans">
-      <BackgroundAnimation />
+      <ColorBends
+        style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: -10 }}
+        colors={["#1a365d", "#2563eb", "#60a5fa", "#93c5fd"]}
+        rotation={90}
+        speed={0.15}
+        scale={1}
+        frequency={1}
+        warpStrength={1}
+        mouseInfluence={0.5}
+        noise={0.08}
+        iterations={2}
+        intensity={1.5}
+        bandWidth={6}
+        transparent={false}
+      />
       {/* Navigation */}
       <nav 
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled ? "py-4 glass shadow-sm" : "py-6 bg-transparent"
+          scrolled ? "py-4 bg-white shadow-sm" : "py-6 bg-transparent"
         }`}
       >
         <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
@@ -147,7 +191,7 @@ export default function App() {
             <span className="font-bold text-lg md:text-xl tracking-tight uppercase text-slate-800">Andre Daniel Jumao-as</span>
           </motion.div>
           
-          <div className="hidden md:flex items-center space-x-10 text-sm font-semibold text-slate-500 uppercase tracking-widest">
+          <div className="hidden md:flex items-center space-x-10 text-sm font-semibold text-slate-700 uppercase tracking-widest">
             <a href="#about" className="hover:text-indigo-600 transition-colors uppercase tracking-widest text-[11px]">About</a>
             <a href="#skills" className="hover:text-indigo-600 transition-colors uppercase tracking-widest text-[11px]">Skills</a>
             <a href="#experience" className="hover:text-indigo-600 transition-colors uppercase tracking-widest text-[11px]">Experience</a>
@@ -155,18 +199,42 @@ export default function App() {
             <a href="#contact" className="hover:text-indigo-600 transition-colors uppercase tracking-widest text-[11px]">Contact</a>
           </div>
 
-          <motion.button 
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="px-5 py-2 bg-indigo-600 text-white text-[11px] font-bold uppercase tracking-widest rounded-lg hover:bg-indigo-700 transition-all active:scale-95 shadow-sm shadow-indigo-200"
-          >
-            Resume
-          </motion.button>
+          <div className="relative">
+            <motion.button 
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              onClick={() => setShowResumeMenu(!showResumeMenu)}
+              onBlur={() => setTimeout(() => setShowResumeMenu(false), 200)}
+              className="px-5 py-2 bg-indigo-600 text-white text-[11px] font-bold uppercase tracking-widest rounded-lg hover:bg-indigo-700 transition-all active:scale-95 shadow-sm shadow-indigo-200"
+            >
+              Resume
+            </motion.button>
+            {showResumeMenu && (
+              <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-xl shadow-xl border border-slate-200 overflow-hidden z-50">
+                <button
+                  onClick={() => { setShowResumeMenu(false); setShowResumeViewer(true); }}
+                  className="flex items-center gap-3 px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 transition-colors w-full text-left"
+                >
+                  <Globe className="w-4 h-4" />
+                  View Resume
+                </button>
+                <a
+                  href="/Resume_Dree.pdf"
+                  download
+                  className="flex items-center gap-3 px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 transition-colors border-t border-slate-100"
+                  onClick={() => setShowResumeMenu(false)}
+                >
+                  <Download className="w-4 h-4" />
+                  Download PDF
+                </a>
+              </div>
+            )}
+          </div>
         </div>
       </nav>
 
       {/* Hero Section */}
-      <section id="about" className="relative pt-40 pb-20 md:pt-60 md:pb-40 overflow-hidden">
+      <section id="about" className="relative pt-40 pb-20 md:pt-60 md:pb-40 overflow-hidden bg-white/80 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-6 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <motion.div
@@ -182,10 +250,10 @@ export default function App() {
                 Hi, My name is <br /> 
                 <span className="text-indigo-600">Andre Daniel Jumao-as.</span>
               </h1>
-              <p className="max-w-xl text-lg text-slate-600 leading-relaxed mb-4 font-medium">
+              <p className="max-w-xl text-lg text-slate-800 leading-relaxed mb-4 font-medium">
                 Front-end Developer | Web Designer | AI Practitioner
               </p>
-              <p className="max-w-xl text-slate-500 leading-relaxed mb-10">
+              <p className="max-w-xl text-slate-700 leading-relaxed mb-10">
                 I studied BSIT at UCLM, where I laid the foundation for my career in tech. I specialize in building visually stunning, 
                 highly performant web applications that seamlessly blend modern design with intelligent AI solutions to solve complex problems.
               </p>
@@ -238,7 +306,7 @@ export default function App() {
                   </div>
                   <div>
                     <h4 className="font-bold text-sm text-slate-800">Smart Interfaces</h4>
-                    <p className="text-[10px] text-slate-400 uppercase tracking-widest font-bold">Specialization</p>
+                    <p className="text-[10px] text-slate-600 uppercase tracking-widest font-bold">Specialization</p>
                   </div>
                 </div>
               </motion.div>
@@ -248,14 +316,14 @@ export default function App() {
       </section>
 
       {/* Skills Section */}
-      <section id="skills" className="py-32 bg-slate-100/20 backdrop-blur-[2px]">
+      <section id="skills" className="py-32 bg-white/80 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-6">
           <div className="mb-20">
-            <h2 className="text-[10px] font-bold uppercase tracking-[0.3em] text-slate-400 mb-4">Core Competencies</h2>
+            <h2 className="text-[10px] font-bold uppercase tracking-[0.3em] text-slate-600 mb-4">Core Competencies</h2>
             <h2 className="text-4xl md:text-5xl font-display font-bold text-slate-900">Technical Stack.</h2>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {SKILLS.map((skill, index) => (
               <motion.div
                 key={skill.category}
@@ -268,7 +336,7 @@ export default function App() {
                 <h3 className="text-lg font-bold mb-4 text-slate-800">{skill.category}</h3>
                 <div className="flex flex-wrap gap-2">
                   {skill.items.map(item => (
-                    <span key={item} className="px-3 py-1.5 bg-slate-100 text-slate-600 text-xs font-bold rounded-md">
+                    <span key={item} className="px-3 py-1.5 bg-slate-100 text-slate-800 text-xs font-bold rounded-md">
                       {item}
                     </span>
                   ))}
@@ -280,10 +348,10 @@ export default function App() {
       </section>
 
       {/* Experience Section */}
-      <section id="experience" className="py-32">
+      <section id="experience" className="py-32 bg-white/80 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-6">
           <div className="mb-20 text-center">
-            <h2 className="text-[10px] font-bold uppercase tracking-[0.3em] text-slate-400 mb-4">Professional Journey</h2>
+            <h2 className="text-[10px] font-bold uppercase tracking-[0.3em] text-slate-600 mb-4">Professional Journey</h2>
             <h2 className="text-4xl md:text-5xl font-display font-bold text-slate-900">Work Experience.</h2>
           </div>
 
@@ -305,7 +373,7 @@ export default function App() {
 
                 <div className="flex flex-col md:flex-row md:items-start justify-between gap-6">
                   {exp.image && (
-                    <div className="md:w-48 lg:w-56 flex-shrink-0 order-1 md:order-1">
+                    <div className="md:w-64 lg:w-80 flex-shrink-0 order-1 md:order-1">
                       <img 
                         src={exp.image} 
                         alt={exp.company}
@@ -314,15 +382,15 @@ export default function App() {
                     </div>
                   )}
                   <div className="flex-1 order-2 md:order-2">
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-indigo-600 mb-2 block">{exp.period}</span>
-                    <h3 className="text-2xl font-bold text-slate-900 mb-1">{exp.role}</h3>
-                    <p className="text-lg font-semibold text-slate-500 mb-4">{exp.company}</p>
-                    <p className="text-slate-600 leading-relaxed max-w-2xl mb-6">
+                    <span className="text-xs font-bold uppercase tracking-widest text-indigo-600 mb-3 block">{exp.period}</span>
+                    <h3 className="text-3xl font-bold text-slate-900 mb-2">{exp.role}</h3>
+                    <p className="text-xl font-semibold text-slate-700 mb-6">{exp.company}</p>
+                    <p className="text-lg text-slate-800 leading-relaxed max-w-2xl mb-8">
                       {exp.description}
                     </p>
                     <div className="flex flex-wrap gap-2">
                       {exp.tech.map(t => (
-                        <span key={t} className="px-3 py-1 bg-slate-50 text-slate-500 text-[10px] font-bold uppercase tracking-widest rounded">
+                        <span key={t} className="px-3 py-1.5 bg-slate-50 text-slate-700 text-xs font-bold uppercase tracking-widest rounded">
                           {t}
                         </span>
                       ))}
@@ -336,15 +404,14 @@ export default function App() {
       </section>
 
       {/* Projects Section */}
-      <section id="projects" className="py-32">
+      <section id="projects" className="py-32 bg-white/80 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
             <div>
-              <h2 className="text-[10px] font-bold uppercase tracking-[0.3em] text-slate-400 mb-4">Professional Portfolio</h2>
+              <h2 className="text-[10px] font-bold uppercase tracking-[0.3em] text-slate-600 mb-4">Professional Portfolio</h2>
               <h2 className="text-4xl md:text-5xl font-display font-bold text-slate-900">Selected Projects.</h2>
             </div>
-            <p className="max-w-md text-slate-500">
-              Honors graduate showcase featuring scalable architectures, automated pipelines, and cloud-native developments.
+            <p className="max-w-md text-slate-700">
             </p>
           </div>
 
@@ -358,13 +425,20 @@ export default function App() {
                 transition={{ delay: index * 0.1 }}
                 className="group"
               >
-                <div className="relative overflow-hidden rounded-2xl mb-6 aspect-video bg-slate-100 border border-slate-200 cursor-pointer flex items-center justify-center" onClick={() => { setSelectedProject(project); setActiveImageIndex(0); }}>
-                  <img 
-                    src={project.images ? project.images[0] : project.image} 
-                    alt={project.title}
-                    className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0 opacity-80 group-hover:opacity-100"
-                    referrerPolicy="no-referrer"
-                  />
+                <div className="relative overflow-hidden rounded-2xl mb-6 aspect-video bg-slate-100 border border-slate-200 cursor-pointer" onClick={() => { setSelectedProject(project); setActiveImageIndex(0); }}>
+                  <AnimatePresence mode="wait">
+                    <motion.img
+                      key={project.images ? cardImageIndices[index] : 0}
+                      src={project.images[cardImageIndices[index]]}
+                      alt={project.title}
+                      initial={{ opacity: 0, scale: 1.1 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.9 }}
+                      transition={{ duration: 0.5 }}
+                      className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0 opacity-80 group-hover:opacity-100"
+                      referrerPolicy="no-referrer"
+                    />
+                  </AnimatePresence>
                   <div className="absolute inset-0 bg-indigo-900/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center space-x-4 backdrop-blur-sm">
                     <a href={project.github} className="p-3 bg-white rounded-lg hover:scale-110 transition-transform shadow-lg">
                       <Github className="w-5 h-5 text-indigo-600" />
@@ -389,7 +463,7 @@ export default function App() {
                       )}
                     </div>
                     <h3 className="text-2xl font-bold mb-2 text-slate-800 group-hover:text-indigo-600 transition-colors">{project.title}</h3>
-                    <p className="text-slate-500 text-sm mb-4 line-clamp-2 max-w-sm">
+                    <p className="text-slate-700 text-sm mb-4 line-clamp-2 max-w-sm">
                       {project.description}
                     </p>
                     <div className="flex flex-wrap gap-2">
@@ -432,17 +506,12 @@ export default function App() {
                   </a>
                 </div>
                 <div className="group cursor-pointer">
-                  <p className="text-[10px] uppercase tracking-widest text-indigo-400 mb-2 font-bold">Phone Number</p>
-                  <a href="tel:09179516740" className="text-2xl font-medium border-b border-transparent hover:border-indigo-400 transition-all text-slate-200">
-                    09179516740
-                  </a>
                 </div>
                 <div className="group cursor-pointer">
                   <p className="text-[10px] uppercase tracking-widest text-indigo-400 mb-2 font-bold">Social Handlers</p>
                   <div className="flex space-x-6">
                     <a href="https://www.linkedin.com/in/andre-daniel-jumao-as-2756ab3a8/" className="hover:text-indigo-400 transition-colors">LinkedIn</a>
                     <a href="https://github.com/DreyDein" className="hover:text-indigo-400 transition-colors">GitHub</a>
-                    <a href="#" className="hover:text-indigo-400 transition-colors">Digital CV</a>
                   </div>
                 </div>
               </div>
@@ -476,11 +545,11 @@ export default function App() {
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+              className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] flex flex-col md:flex-row"
               onClick={(e) => e.stopPropagation()}
             >
-              {selectedProject.images ? (
-                <div className="relative aspect-video bg-slate-100 flex items-center justify-center">
+              {selectedProject.images && (
+                <div className="relative md:w-3/5 min-h-48 md:min-h-0 bg-slate-100 flex items-center justify-center">
                   <img
                     src={selectedProject.images[activeImageIndex]}
                     alt={selectedProject.title}
@@ -518,26 +587,11 @@ export default function App() {
                     onClick={() => { setSelectedProject(null); setActiveImageIndex(0); }}
                     className="absolute top-4 right-4 p-2 bg-white/90 rounded-lg hover:bg-white transition-colors shadow-lg"
                   >
-                    <ChevronRight className="w-5 h-5 rotate-45" />
-                  </button>
-                </div>
-              ) : (
-                <div className="relative aspect-video bg-slate-100 flex items-center justify-center">
-                  <img
-                    src={selectedProject.image}
-                    alt={selectedProject.title}
-                    className="w-full h-full object-contain"
-                    referrerPolicy="no-referrer"
-                  />
-                  <button
-                    onClick={() => setSelectedProject(null)}
-                    className="absolute top-4 right-4 p-2 bg-white/90 rounded-lg hover:bg-white transition-colors shadow-lg"
-                  >
-                    <ChevronRight className="w-5 h-5 rotate-45" />
+                    <X className="w-5 h-5" />
                   </button>
                 </div>
               )}
-              <div className="p-8">
+              <div className="p-8 md:w-2/5 overflow-y-auto md:self-stretch">
                 <div className="flex items-center gap-2 mb-3 flex-wrap">
                   {selectedProject.label && (
                     <span className="text-[10px] font-bold uppercase tracking-widest text-amber-600 bg-amber-50 px-2 py-0.5 rounded">
@@ -551,7 +605,7 @@ export default function App() {
                   )}
                 </div>
                 <h3 className="text-2xl font-bold mb-4 text-slate-800">{selectedProject.title}</h3>
-                <p className="text-slate-600 leading-relaxed mb-6">
+                <p className="text-slate-800 leading-relaxed mb-6">
                   {selectedProject.description}
                 </p>
                 <div className="flex flex-wrap gap-2 mb-6">
@@ -561,17 +615,52 @@ export default function App() {
                     </span>
                   ))}
                 </div>
-                <div className="flex gap-4">
-                  <a href={selectedProject.github} className="flex items-center gap-2 px-4 py-2 bg-slate-900 text-white rounded-lg text-sm font-bold hover:bg-slate-800 transition-colors">
-                    <Github className="w-4 h-4" />
-                    View Code
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Resume Viewer Modal */}
+      <AnimatePresence>
+        {showResumeViewer && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+            onClick={() => setShowResumeViewer(false)}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              className="bg-white rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200">
+                <h3 className="font-bold text-slate-800">Resume</h3>
+                <div className="flex items-center gap-3">
+                  <a
+                    href="/Resume_Dree.pdf"
+                    download
+                    className="flex items-center gap-2 px-3 py-1.5 bg-indigo-600 text-white text-xs font-bold uppercase tracking-widest rounded-lg hover:bg-indigo-700 transition-colors"
+                  >
+                    <Download className="w-3.5 h-3.5" />
+                    Download
                   </a>
-                  <a href={selectedProject.link} className="flex items-center gap-2 px-4 py-2 border border-slate-200 rounded-lg text-sm font-bold hover:bg-slate-50 transition-colors">
-                    <ExternalLink className="w-4 h-4" />
-                    Live Demo
-                  </a>
+                  <button
+                    onClick={() => setShowResumeViewer(false)}
+                    className="p-1.5 hover:bg-slate-100 rounded-lg transition-colors"
+                  >
+                    <X className="w-5 h-5 text-slate-500" />
+                  </button>
                 </div>
               </div>
+              <embed
+                src="/Resume_Dree.pdf#toolbar=0"
+                className="w-full h-[80vh]"
+              />
             </motion.div>
           </motion.div>
         )}
