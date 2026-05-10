@@ -27,6 +27,7 @@ import { useState, useEffect } from 'react';
 import ColorBends from '../components/ColorBends';
 import profileImg from "./assets/about-me.jpeg"
 import logoImg from "./assets/Jumao-as_ID.png"
+import ibmCertImg from "./assets/IBM_Certificate.png"
 import lifewoodImg from "./assets/Lifewood-Intern.jpeg"
 import lifewood1Img from "./assets/lifewood (1).png"
 import lifewood2Img from "./assets/lifewood (2).png"
@@ -139,6 +140,7 @@ export default function App() {
   const [cardImageIndices, setCardImageIndices] = useState<number[]>(PROJECTS.map(() => 0));
   const [showResumeMenu, setShowResumeMenu] = useState(false);
   const [showResumeViewer, setShowResumeViewer] = useState(false);
+  const [showCertModal, setShowCertModal] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -158,8 +160,13 @@ export default function App() {
     return () => clearInterval(interval);
   }, []);
 
+  const scrollToSection = (id: string) => (e: React.MouseEvent) => {
+    e.preventDefault();
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
-    <div className="min-h-screen font-sans">
+    <div className="min-h-screen font-sans scroll-smooth">
       <ColorBends
         style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: -10 }}
         colors={["#1a365d", "#2563eb", "#60a5fa", "#93c5fd"]}
@@ -192,11 +199,12 @@ export default function App() {
           </motion.div>
           
           <div className="hidden md:flex items-center space-x-10 text-sm font-semibold text-slate-700 uppercase tracking-widest">
-            <a href="#about" className="hover:text-indigo-600 transition-colors uppercase tracking-widest text-[11px]">About</a>
-            <a href="#skills" className="hover:text-indigo-600 transition-colors uppercase tracking-widest text-[11px]">Skills</a>
-            <a href="#experience" className="hover:text-indigo-600 transition-colors uppercase tracking-widest text-[11px]">Experience</a>
-            <a href="#projects" className="hover:text-indigo-600 transition-colors uppercase tracking-widest text-[11px]">Projects</a>
-            <a href="#contact" className="hover:text-indigo-600 transition-colors uppercase tracking-widest text-[11px]">Contact</a>
+            <a href="#about" onClick={scrollToSection('about')} className="hover:text-indigo-600 transition-colors uppercase tracking-widest text-[11px]">About</a>
+            <a href="#skills" onClick={scrollToSection('skills')} className="hover:text-indigo-600 transition-colors uppercase tracking-widest text-[11px]">Skills</a>
+            <a href="#experience" onClick={scrollToSection('experience')} className="hover:text-indigo-600 transition-colors uppercase tracking-widest text-[11px]">Experience</a>
+            <a href="#certificates" onClick={scrollToSection('certificates')} className="hover:text-indigo-600 transition-colors uppercase tracking-widest text-[11px]">Certificates</a>
+            <a href="#projects" onClick={scrollToSection('projects')} className="hover:text-indigo-600 transition-colors uppercase tracking-widest text-[11px]">Projects</a>
+            <a href="#contact" onClick={scrollToSection('contact')} className="hover:text-indigo-600 transition-colors uppercase tracking-widest text-[11px]">Contact</a>
           </div>
 
           <div className="relative">
@@ -234,13 +242,14 @@ export default function App() {
       </nav>
 
       {/* Hero Section */}
-      <section id="about" className="relative pt-40 pb-20 md:pt-60 md:pb-40 overflow-hidden bg-white/80 backdrop-blur-sm">
+      <section id="about" className="relative pt-40 pb-20 md:pt-60 md:pb-40 overflow-hidden bg-white/80 backdrop-blur-sm scroll-mt-24">
         <div className="max-w-7xl mx-auto px-6 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
+              className=""
             >
               <div className="inline-flex items-center space-x-2 px-3 py-1 bg-indigo-50 border border-indigo-100 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] mb-6 text-indigo-600">
                 <span className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></span>
@@ -260,6 +269,7 @@ export default function App() {
               <div className="flex flex-wrap gap-4">
                 <a 
                   href="#projects"
+                  onClick={scrollToSection('projects')}
                   className="px-8 py-4 bg-indigo-600 text-white rounded-xl font-bold uppercase tracking-widest text-xs flex items-center group shadow-lg shadow-indigo-200"
                 >
                   View Featured Projects
@@ -316,7 +326,7 @@ export default function App() {
       </section>
 
       {/* Skills Section */}
-      <section id="skills" className="py-32 bg-white/80 backdrop-blur-sm">
+      <section id="skills" className="py-32 bg-white/80 backdrop-blur-sm scroll-mt-24">
         <div className="max-w-7xl mx-auto px-6">
           <div className="mb-20">
             <h2 className="text-[10px] font-bold uppercase tracking-[0.3em] text-slate-600 mb-4">Core Competencies</h2>
@@ -348,7 +358,7 @@ export default function App() {
       </section>
 
       {/* Experience Section */}
-      <section id="experience" className="py-32 bg-white/80 backdrop-blur-sm">
+      <section id="experience" className="py-32 bg-white/80 backdrop-blur-sm scroll-mt-24">
         <div className="max-w-7xl mx-auto px-6">
           <div className="mb-20 text-center">
             <h2 className="text-[10px] font-bold uppercase tracking-[0.3em] text-slate-600 mb-4">Professional Journey</h2>
@@ -403,8 +413,31 @@ export default function App() {
         </div>
       </section>
 
+      {/* Certificates Section */}
+      <section id="certificates" className="py-32 bg-white/80 backdrop-blur-sm scroll-mt-24">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="mb-20">
+            <h2 className="text-[10px] font-bold uppercase tracking-[0.3em] text-slate-600 mb-4">Credentials</h2>
+            <h2 className="text-4xl md:text-5xl font-display font-bold text-slate-900">Certifications.</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <motion.div
+              whileHover={{ y: -5 }}
+              className="p-8 bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300"
+            >
+              <img
+                src={ibmCertImg}
+                alt="IBM Certificate"
+                className="w-full h-auto rounded-lg object-contain cursor-pointer"
+                onClick={() => setShowCertModal(true)}
+              />
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
       {/* Projects Section */}
-      <section id="projects" className="py-32 bg-white/80 backdrop-blur-sm">
+      <section id="projects" className="py-32 bg-white/80 backdrop-blur-sm scroll-mt-24">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
             <div>
@@ -442,9 +475,6 @@ export default function App() {
                   <div className="absolute inset-0 bg-indigo-900/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center space-x-4 backdrop-blur-sm">
                     <a href={project.github} className="p-3 bg-white rounded-lg hover:scale-110 transition-transform shadow-lg">
                       <Github className="w-5 h-5 text-indigo-600" />
-                    </a>
-                    <a href={project.link} className="p-3 bg-white rounded-lg hover:scale-110 transition-transform shadow-lg">
-                      <ExternalLink className="w-5 h-5 text-indigo-600" />
                     </a>
                   </div>
                 </div>
@@ -522,9 +552,10 @@ export default function App() {
                 © 2026 Andre Daniel Jumao-as – Front-end Developer | Web Designer | AI Practitioner
               </div>
               <div className="flex space-x-8 text-[10px] font-bold uppercase tracking-widest">
-                <a href="#about" className="text-slate-500 hover:text-white transition-colors">About</a>
-                <a href="#experience" className="text-slate-500 hover:text-white transition-colors">Experience</a>
-                <a href="#projects" className="text-slate-500 hover:text-white transition-colors">Projects</a>
+                <a href="#about" onClick={scrollToSection('about')} className="text-slate-500 hover:text-white transition-colors">About</a>
+                <a href="#experience" onClick={scrollToSection('experience')} className="text-slate-500 hover:text-white transition-colors">Experience</a>
+                <a href="#certificates" onClick={scrollToSection('certificates')} className="text-slate-500 hover:text-white transition-colors">Certificates</a>
+                <a href="#projects" onClick={scrollToSection('projects')} className="text-slate-500 hover:text-white transition-colors">Projects</a>
               </div>
             </footer>
           </div>
@@ -660,6 +691,39 @@ export default function App() {
               <embed
                 src="/Resume_Dree.pdf#toolbar=0"
                 className="w-full h-[80vh]"
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Certificate Image Modal */}
+      <AnimatePresence>
+        {showCertModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+            onClick={() => setShowCertModal(false)}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              className="bg-white rounded-2xl overflow-hidden max-w-3xl w-full max-h-[90vh] flex items-center"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                onClick={() => setShowCertModal(false)}
+                className="absolute top-3 right-3 z-10 p-1.5 bg-white/80 hover:bg-white rounded-lg shadow-sm transition-colors"
+              >
+                <X className="w-5 h-5 text-slate-500" />
+              </button>
+              <img
+                src={ibmCertImg}
+                alt="IBM Certificate"
+                className="w-full h-auto object-contain p-4"
               />
             </motion.div>
           </motion.div>
