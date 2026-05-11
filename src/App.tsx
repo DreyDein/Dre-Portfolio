@@ -25,7 +25,7 @@ import {
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import Iridescence from './components/Iridescence';
-import profileImg from "./assets/about-me.jpeg"
+import profileImg from "./assets/Jumao-as_ID.png"
 import logoImg from "./assets/Jumao-as_ID.png"
 import ibmCertImg from "./assets/IBM_Certificate.png"
 import lifewoodImg from "./assets/Lifewood-Intern.jpeg"
@@ -45,6 +45,8 @@ import gamedev1Img from "./assets/gamedev1.png"
 import gamedev2Img from "./assets/gamedev2.png"
 import gamedev3Img from "./assets/gamedev3.png"
 import gamedev4Img from "./assets/gamedev4.png"
+
+const IRIDESCENCE_COLOR: [number, number, number] = [0.13725490196078431, 0.23529411764705882, 0.4235294117647059];
 
 const SKILLS = [
   {
@@ -141,6 +143,12 @@ export default function App() {
   const [showResumeMenu, setShowResumeMenu] = useState(false);
   const [showResumeViewer, setShowResumeViewer] = useState(false);
   const [showCertModal, setShowCertModal] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 1500);
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -162,14 +170,34 @@ export default function App() {
 
   const scrollToSection = (id: string) => (e: React.MouseEvent) => {
     e.preventDefault();
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: id === 'projects' || id === 'contact' ? 'start' : 'center' });
   };
 
   return (
     <div className="min-h-screen font-sans scroll-smooth">
+      <AnimatePresence>
+        {loading && (
+          <motion.div
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+            className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[#233c6c]"
+          >
+            <p className="text-white/80 text-lg font-bold uppercase tracking-[0.3em] mb-8">Loading</p>
+            <div className="w-64 h-1.5 bg-white/20 rounded-full overflow-hidden">
+              <motion.div
+                initial={{ width: 0 }}
+                animate={{ width: '100%' }}
+                transition={{ duration: 1.2, ease: 'easeInOut' }}
+                className="h-full bg-white rounded-full"
+              />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
       <div className="fixed inset-0 z-[-10]">
         <Iridescence
-          color={[0.13725490196078431, 0.23529411764705882, 0.4235294117647059]}
+          color={IRIDESCENCE_COLOR}
           mouseReact={false}
           amplitude={0.1}
           speed={1.0}
@@ -235,7 +263,7 @@ export default function App() {
       </nav>
 
       {/* Hero Section */}
-      <section id="about" className="relative pt-40 pb-20 md:pt-60 md:pb-40 overflow-hidden scroll-mt-24">
+      <section id="about" className="relative pt-20 pb-20 md:pt-28 md:pb-40 overflow-hidden scroll-mt-24">
         <div className="max-w-7xl mx-auto px-6 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <motion.div
@@ -293,7 +321,7 @@ export default function App() {
                 <img 
                   src={profileImg}
                   alt="Profile" 
-                  className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700 rounded-xl"
+                  className="w-full h-full object-cover transition-all duration-700 rounded-xl"
                 />
               </motion.div>
               
@@ -319,9 +347,9 @@ export default function App() {
       </section>
 
       {/* Skills Section */}
-      <section id="skills" className="py-32 scroll-mt-24">
+      <section id="skills" className="py-20 scroll-mt-24">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="mb-20">
+          <div className="mb-10">
             <h2 className="text-[10px] font-bold uppercase tracking-[0.3em] text-slate-400 mb-4">Core Competencies</h2>
             <h2 className="text-4xl md:text-5xl font-display font-bold text-white">Technical Stack.</h2>
           </div>
@@ -351,7 +379,7 @@ export default function App() {
       </section>
 
       {/* Experience Section */}
-      <section id="experience" className="py-32 scroll-mt-24">
+      <section id="experience" className="py-20 scroll-mt-24">
         <div className="max-w-7xl mx-auto px-6">
           <div className="mb-20 text-center">
             <h2 className="text-[10px] font-bold uppercase tracking-[0.3em] text-slate-400 mb-4">Professional Journey</h2>
@@ -374,13 +402,13 @@ export default function App() {
                 {/* Timeline Dot */}
                 <div className="absolute left-0 top-2 w-4 h-4 rounded-full border-2 border-indigo-600 bg-white z-10 transition-transform group-hover:scale-125"></div>
 
-                <div className="flex flex-col md:flex-row md:items-start justify-between gap-6">
+                <div className="flex flex-col md:flex-row md:items-stretch justify-between gap-6">
                   {exp.image && (
-                    <div className="md:w-64 lg:w-80 flex-shrink-0 order-1 md:order-1">
+                    <div className="md:w-80 lg:w-96 flex-shrink-0 order-1 md:order-1">
                       <img 
                         src={exp.image} 
                         alt={exp.company}
-                        className="w-full h-auto rounded-lg object-cover shadow-lg"
+                        className="w-full h-full rounded-lg object-contain shadow-lg"
                       />
                     </div>
                   )}
@@ -407,7 +435,7 @@ export default function App() {
       </section>
 
       {/* Certificates Section */}
-      <section id="certificates" className="py-32 scroll-mt-24">
+      <section id="certificates" className="py-20 scroll-mt-24">
         <div className="max-w-7xl mx-auto px-6">
           <div className="mb-20">
             <h2 className="text-[10px] font-bold uppercase tracking-[0.3em] text-slate-400 mb-4">Credentials</h2>
@@ -416,7 +444,7 @@ export default function App() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <motion.div
               whileHover={{ y: -5 }}
-              className="p-8 bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300"
+              className="p-8 bg-white/10 backdrop-blur-sm rounded-2xl shadow-sm hover:shadow-md transition-all duration-300"
             >
               <img
                 src={ibmCertImg}
@@ -424,13 +452,16 @@ export default function App() {
                 className="w-full h-auto rounded-lg object-contain cursor-pointer"
                 onClick={() => setShowCertModal(true)}
               />
+              <p className="mt-4 text-sm text-slate-300 leading-relaxed">
+                Earned the IBM SkillsBuild AI Literacy Certificate, demonstrating foundational knowledge in Artificial Intelligence concepts, responsible AI use, and emerging digital technologies.
+              </p>
             </motion.div>
           </div>
         </div>
       </section>
 
       {/* Projects Section */}
-      <section id="projects" className="py-32 scroll-mt-24">
+      <section id="projects" className="py-20 scroll-mt-24">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
             <div>
@@ -508,7 +539,7 @@ export default function App() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-32 bg-slate-900 text-white overflow-hidden relative">
+      <section id="contact" className="py-20 bg-slate-900 text-white overflow-hidden relative">
         {/* Background Patterns */}
         <div className="absolute top-0 right-0 w-1/3 h-full bg-indigo-600 opacity-[0.05] -skew-x-12 translate-x-1/2"></div>
         
