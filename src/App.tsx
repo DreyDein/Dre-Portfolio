@@ -21,10 +21,13 @@ import {
   Layout,
   Layers,
   ArrowUpRight,
-  X
+  X,
+  Menu
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import Iridescence from './components/Iridescence';
+import GradientText from './components/GradientText';
+import TextType from './components/TextType';
 import profileImg from "./assets/Jumao-as_ID.png"
 import logoImg from "./assets/Jumao-as_ID.png"
 import ibmCertImg from "./assets/IBM_Certificate.png"
@@ -144,6 +147,21 @@ export default function App() {
   const [showResumeViewer, setShowResumeViewer] = useState(false);
   const [showCertModal, setShowCertModal] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [activeSection, setActiveSection] = useState('about');
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) setActiveSection(entry.target.id);
+        });
+      },
+      { rootMargin: '-30% 0px -60% 0px' }
+    );
+    document.querySelectorAll('section[id]').forEach(s => observer.observe(s));
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 1500);
@@ -184,7 +202,7 @@ export default function App() {
             className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[#233c6c]"
           >
             <p className="text-white/80 text-lg font-bold uppercase tracking-[0.3em] mb-8">Loading</p>
-            <div className="w-64 h-1.5 bg-white/20 rounded-full overflow-hidden">
+            <div className="w-full max-w-xs h-1.5 bg-white/20 rounded-full overflow-hidden">
               <motion.div
                 initial={{ width: 0 }}
                 animate={{ width: '100%' }}
@@ -216,19 +234,28 @@ export default function App() {
             className="flex items-center gap-3"
           >
             <img src={logoImg} alt="Logo" className="w-10 h-10 rounded-lg object-cover" />
-            <span className="font-bold text-lg md:text-xl tracking-tight uppercase">Andre Daniel Jumao-as</span>
+            <span className="font-bold text-lg md:text-xl tracking-tight uppercase">Dre</span>
           </motion.div>
           
           <div className="hidden md:flex items-center space-x-10 text-sm font-semibold uppercase tracking-widest">
-            <a href="#about" onClick={scrollToSection('about')} className="hover:text-indigo-600 transition-colors uppercase tracking-widest text-[11px]">About</a>
-            <a href="#skills" onClick={scrollToSection('skills')} className="hover:text-indigo-600 transition-colors uppercase tracking-widest text-[11px]">Skills</a>
-            <a href="#experience" onClick={scrollToSection('experience')} className="hover:text-indigo-600 transition-colors uppercase tracking-widest text-[11px]">Experience</a>
-            <a href="#certificates" onClick={scrollToSection('certificates')} className="hover:text-indigo-600 transition-colors uppercase tracking-widest text-[11px]">Certificates</a>
-            <a href="#projects" onClick={scrollToSection('projects')} className="hover:text-indigo-600 transition-colors uppercase tracking-widest text-[11px]">Projects</a>
-            <a href="#contact" onClick={scrollToSection('contact')} className="hover:text-indigo-600 transition-colors uppercase tracking-widest text-[11px]">Contact</a>
+            <a href="#about" onClick={scrollToSection('about')} className={`transition-colors uppercase tracking-widest text-[11px] ${activeSection === 'about' ? 'text-indigo-600' : 'hover:text-indigo-600'}`}>About</a>
+            <a href="#skills" onClick={scrollToSection('skills')} className={`transition-colors uppercase tracking-widest text-[11px] ${activeSection === 'skills' ? 'text-indigo-600' : 'hover:text-indigo-600'}`}>Skills</a>
+            <a href="#experience" onClick={scrollToSection('experience')} className={`transition-colors uppercase tracking-widest text-[11px] ${activeSection === 'experience' ? 'text-indigo-600' : 'hover:text-indigo-600'}`}>Experience</a>
+            <a href="#certificates" onClick={scrollToSection('certificates')} className={`transition-colors uppercase tracking-widest text-[11px] ${activeSection === 'certificates' ? 'text-indigo-600' : 'hover:text-indigo-600'}`}>Certificates</a>
+            <a href="#projects" onClick={scrollToSection('projects')} className={`transition-colors uppercase tracking-widest text-[11px] ${activeSection === 'projects' ? 'text-indigo-600' : 'hover:text-indigo-600'}`}>Projects</a>
+            <a href="#contact" onClick={scrollToSection('contact')} className={`transition-colors uppercase tracking-widest text-[11px] ${activeSection === 'contact' ? 'text-indigo-600' : 'hover:text-indigo-600'}`}>Contact</a>
           </div>
 
-          <div className="relative">
+          <div className="flex items-center gap-2">
+            <button
+              className="md:hidden p-2 rounded-lg hover:bg-white/10 transition-colors"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label="Toggle menu"
+            >
+              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+
+            <div className="relative">
             <motion.button 
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -239,7 +266,7 @@ export default function App() {
               Resume
             </motion.button>
             {showResumeMenu && (
-              <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-xl shadow-xl border border-slate-200 overflow-hidden z-50">
+              <div className="absolute right-0 top-full mt-2 w-48 min-w-[12rem] max-w-[90vw] bg-white rounded-xl shadow-xl border border-slate-200 overflow-hidden z-50">
                 <button
                   onClick={() => { setShowResumeMenu(false); setShowResumeViewer(true); }}
                   className="flex items-center gap-3 px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 transition-colors w-full text-left"
@@ -259,6 +286,27 @@ export default function App() {
               </div>
             )}
           </div>
+          </div>
+
+          <AnimatePresence>
+          {mobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              className="md:hidden absolute top-full left-0 right-0 bg-white/95 backdrop-blur-md shadow-lg border-t border-slate-200 overflow-hidden"
+            >
+              <div className="flex flex-col py-4 px-4 space-y-2 text-sm font-bold uppercase tracking-widest">
+                <a href="#about" onClick={(e) => { scrollToSection('about')(e); setMobileMenuOpen(false); }} className={`px-4 py-3 rounded-xl transition-colors ${activeSection === 'about' ? 'text-indigo-600 bg-indigo-50' : 'text-slate-700 hover:text-indigo-600 hover:bg-indigo-50'}`}>About</a>
+                <a href="#skills" onClick={(e) => { scrollToSection('skills')(e); setMobileMenuOpen(false); }} className={`px-4 py-3 rounded-xl transition-colors ${activeSection === 'skills' ? 'text-indigo-600 bg-indigo-50' : 'text-slate-700 hover:text-indigo-600 hover:bg-indigo-50'}`}>Skills</a>
+                <a href="#experience" onClick={(e) => { scrollToSection('experience')(e); setMobileMenuOpen(false); }} className={`px-4 py-3 rounded-xl transition-colors ${activeSection === 'experience' ? 'text-indigo-600 bg-indigo-50' : 'text-slate-700 hover:text-indigo-600 hover:bg-indigo-50'}`}>Experience</a>
+                <a href="#certificates" onClick={(e) => { scrollToSection('certificates')(e); setMobileMenuOpen(false); }} className={`px-4 py-3 rounded-xl transition-colors ${activeSection === 'certificates' ? 'text-indigo-600 bg-indigo-50' : 'text-slate-700 hover:text-indigo-600 hover:bg-indigo-50'}`}>Certificates</a>
+                <a href="#projects" onClick={(e) => { scrollToSection('projects')(e); setMobileMenuOpen(false); }} className={`px-4 py-3 rounded-xl transition-colors ${activeSection === 'projects' ? 'text-indigo-600 bg-indigo-50' : 'text-slate-700 hover:text-indigo-600 hover:bg-indigo-50'}`}>Projects</a>
+                <a href="#contact" onClick={(e) => { scrollToSection('contact')(e); setMobileMenuOpen(false); }} className={`px-4 py-3 rounded-xl transition-colors ${activeSection === 'contact' ? 'text-indigo-600 bg-indigo-50' : 'text-slate-700 hover:text-indigo-600 hover:bg-indigo-50'}`}>Contact</a>
+              </div>
+            </motion.div>
+          )}
+          </AnimatePresence>
         </div>
       </nav>
 
@@ -278,10 +326,25 @@ export default function App() {
               </div>
               <h1 className="text-4xl md:text-7xl font-display font-bold leading-[1.1] tracking-tighter mb-8 text-white">
                 Hi, My name is <br /> 
-                <span className="text-indigo-300">Andre Daniel Jumao-as.</span>
+                <GradientText
+                  colors={["#818cf8", "#6366f1", "#a78bfa", "#818cf8"]}
+                  animationSpeed={4}
+                  className="!inline !text-inherit !bg-transparent !backdrop-blur-none !cursor-text !max-w-none"
+                >
+                  Andre Daniel Jumao-as.
+                </GradientText>
               </h1>
-              <p className="max-w-xl text-lg text-slate-200 leading-relaxed mb-4 font-medium">
-                Front-end Developer | Web Designer | AI Practitioner
+              <p className="max-w-xl text-xl sm:text-2xl text-slate-200 leading-relaxed mb-4 font-semibold">
+                <TextType
+                  text={["Front-end Developer", "Web Designer", "AI Practitioner"]}
+                  typingSpeed={60}
+                  deletingSpeed={40}
+                  pauseDuration={2000}
+                  showCursor={true}
+                  cursorCharacter="|"
+                  loop={true}
+                  as="span"
+                />
               </p>
               <p className="max-w-xl text-slate-300 leading-relaxed mb-10">
                 I studied BSIT at UCLM, where I laid the foundation for my career in tech. I specialize in building visually stunning, 
@@ -291,7 +354,7 @@ export default function App() {
                 <a 
                   href="#projects"
                   onClick={scrollToSection('projects')}
-                  className="px-8 py-4 bg-indigo-600 text-white rounded-xl font-bold uppercase tracking-widest text-xs flex items-center group shadow-lg shadow-indigo-200"
+                  className="px-6 sm:px-8 py-3 sm:py-4 bg-indigo-600 text-white rounded-xl font-bold uppercase tracking-widest text-xs flex items-center group shadow-lg shadow-indigo-200"
                 >
                   View Featured Projects
                   <ArrowUpRight className="ml-2 w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
@@ -347,7 +410,7 @@ export default function App() {
       </section>
 
       {/* Skills Section */}
-      <section id="skills" className="py-20 scroll-mt-24">
+      <section id="skills" className="py-20 scroll-mt-24 overflow-x-hidden">
         <div className="max-w-7xl mx-auto px-6">
           <div className="mb-10">
             <h2 className="text-[10px] font-bold uppercase tracking-[0.3em] text-slate-400 mb-4">Core Competencies</h2>
@@ -359,7 +422,7 @@ export default function App() {
               <motion.div
                 key={skill.category}
                 whileHover={{ y: -5 }}
-                className="p-8 bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300"
+                className="p-4 sm:p-6 lg:p-8 bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300"
               >
                 <div className="w-12 h-12 bg-indigo-500/20 rounded-xl flex items-center justify-center mb-6 text-indigo-300">
                   {skill.icon}
@@ -379,7 +442,7 @@ export default function App() {
       </section>
 
       {/* Experience Section */}
-      <section id="experience" className="py-20 scroll-mt-24">
+      <section id="experience" className="py-20 scroll-mt-24 overflow-x-hidden">
         <div className="max-w-7xl mx-auto px-6">
           <div className="mb-20 text-center">
             <h2 className="text-[10px] font-bold uppercase tracking-[0.3em] text-slate-400 mb-4">Professional Journey</h2>
@@ -394,7 +457,7 @@ export default function App() {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="relative pl-12 pb-20 last:pb-0 group"
+                className="relative pl-8 sm:pl-12 pb-20 last:pb-0 group"
               >
                 {/* Timeline Line */}
                 <div className="absolute left-[7px] top-2 bottom-0 w-[2px] bg-slate-100 group-last:hidden"></div>
@@ -412,11 +475,11 @@ export default function App() {
                       />
                     </div>
                   )}
-                  <div className="flex-1 order-2 md:order-2 bg-white/10 backdrop-blur-sm rounded-2xl p-6">
+                  <div className="flex-1 order-2 md:order-2 bg-white/10 backdrop-blur-sm rounded-2xl p-4 sm:p-6">
                     <span className="text-xs font-bold uppercase tracking-widest text-indigo-300 mb-3 block">{exp.period}</span>
-                    <h3 className="text-3xl font-bold text-white mb-2">{exp.role}</h3>
-                    <p className="text-xl font-semibold text-slate-200 mb-6">{exp.company}</p>
-                    <p className="text-lg text-slate-300 leading-relaxed max-w-2xl mb-8">
+                    <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white mb-2">{exp.role}</h3>
+                    <p className="text-base sm:text-lg lg:text-xl font-semibold text-slate-200 mb-6">{exp.company}</p>
+                    <p className="text-sm sm:text-base lg:text-lg text-slate-300 leading-relaxed max-w-2xl mb-8">
                       {exp.description}
                     </p>
                     <div className="flex flex-wrap gap-2">
@@ -435,7 +498,7 @@ export default function App() {
       </section>
 
       {/* Certificates Section */}
-      <section id="certificates" className="py-20 scroll-mt-24">
+      <section id="certificates" className="py-20 scroll-mt-24 overflow-x-hidden">
         <div className="max-w-7xl mx-auto px-6">
           <div className="mb-20">
             <h2 className="text-[10px] font-bold uppercase tracking-[0.3em] text-slate-400 mb-4">Credentials</h2>
@@ -444,7 +507,7 @@ export default function App() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <motion.div
               whileHover={{ y: -5 }}
-              className="p-8 bg-white/10 backdrop-blur-sm rounded-2xl shadow-sm hover:shadow-md transition-all duration-300"
+                className="p-4 sm:p-6 lg:p-8 bg-white/10 backdrop-blur-sm rounded-2xl shadow-sm hover:shadow-md transition-all duration-300"
             >
               <img
                 src={ibmCertImg}
@@ -461,15 +524,13 @@ export default function App() {
       </section>
 
       {/* Projects Section */}
-      <section id="projects" className="py-20 scroll-mt-24">
+      <section id="projects" className="py-20 scroll-mt-24 overflow-x-hidden">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
             <div>
               <h2 className="text-[10px] font-bold uppercase tracking-[0.3em] text-slate-400 mb-4">Professional Portfolio</h2>
               <h2 className="text-4xl md:text-5xl font-display font-bold text-white">Selected Projects.</h2>
             </div>
-            <p className="max-w-md text-slate-700">
-            </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-16">
@@ -502,7 +563,7 @@ export default function App() {
                     </a>
                   </div>
                 </div>
-                <div className="flex items-start justify-between cursor-pointer bg-white/10 backdrop-blur-sm rounded-2xl p-6" onClick={() => setSelectedProject(project)}>
+                <div className="flex items-start justify-between cursor-pointer bg-white/10 backdrop-blur-sm rounded-2xl p-4 sm:p-6" onClick={() => setSelectedProject(project)}>
                   <div>
                     <div className="flex items-center gap-2 mb-2 flex-wrap">
                       {project.label && (
@@ -516,7 +577,7 @@ export default function App() {
                         </span>
                       )}
                     </div>
-                    <h3 className="text-2xl font-bold mb-2 text-white group-hover:text-indigo-300 transition-colors">{project.title}</h3>
+                    <h3 className="text-lg sm:text-xl lg:text-2xl font-bold mb-2 text-white group-hover:text-indigo-300 transition-colors">{project.title}</h3>
                     <p className="text-slate-300 text-sm mb-4 line-clamp-2 max-w-sm">
                       {project.description}
                     </p>
@@ -548,14 +609,14 @@ export default function App() {
             <h2 className="text-[10px] font-bold uppercase tracking-[0.3em] text-slate-500 mb-6 font-display">Communication Channel</h2>
             <h2 className="text-5xl md:text-7xl font-display font-bold leading-tight mb-12">
               Let's Connect. <br />
-              <span className="text-slate-500">Available for innovative roles.</span>
+              <span className="text-slate-500 whitespace-nowrap">Available for innovative roles.</span>
             </h2>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-20">
               <div className="space-y-8">
                 <div className="group cursor-pointer">
                   <p className="text-[10px] uppercase tracking-widest text-indigo-400 mb-2 font-bold">Email Interface</p>
-                  <a href="mailto:jumaoasandre2003@gmail.com" className="text-2xl font-medium border-b border-transparent hover:border-indigo-400 transition-all text-slate-200">
+                    <a href="mailto:jumaoasandre2003@gmail.com" className="text-lg sm:text-xl lg:text-2xl font-medium border-b border-transparent hover:border-indigo-400 transition-all text-slate-200">
                     jumaoasandre2003@gmail.com
                   </a>
                 </div>
@@ -646,7 +707,7 @@ export default function App() {
                   </button>
                 </div>
               )}
-              <div className="p-8 md:w-2/5 overflow-y-auto md:self-stretch">
+              <div className="p-4 sm:p-6 lg:p-8 md:w-2/5 overflow-y-auto md:self-stretch">
                 <div className="flex items-center gap-2 mb-3 flex-wrap">
                   {selectedProject.label && (
                     <span className="text-[10px] font-bold uppercase tracking-widest text-amber-600 bg-amber-50 px-2 py-0.5 rounded">
@@ -659,7 +720,7 @@ export default function App() {
                     </span>
                   )}
                 </div>
-                <h3 className="text-2xl font-bold mb-4 text-slate-800">{selectedProject.title}</h3>
+                <h3 className="text-lg sm:text-xl lg:text-2xl font-bold mb-4 text-slate-800">{selectedProject.title}</h3>
                 <p className="text-slate-800 leading-relaxed mb-6">
                   {selectedProject.description}
                 </p>
